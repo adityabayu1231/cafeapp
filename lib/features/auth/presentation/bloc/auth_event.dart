@@ -16,3 +16,13 @@ class LoginSubmitted extends AuthEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class OtpSubmitted extends AuthEvent {
+  final String email;
+  final String code;
+
+  const OtpSubmitted({required this.email, required this.code});
+
+  @override
+  List<Object?> get props => [email, code];
+}

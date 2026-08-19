@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 abstract class AuthRemoteDataSource {
   Future<void> login({required String email, required String password});
+  Future<String> verifyOtp({required String email, required String code});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -15,9 +16,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'email': email,
       'password': password,
     });
-    // Response body diabaikan di sini — backend cuma balas
-    // { success, message: "OTP telah dikirim..." }, tidak ada data terpakai.
-    // Kalau request gagal (401/422/dst), Dio otomatis throw DioException,
-    // ditangkap di repository impl.
+  }
+
+  @override
+  Future<String> verifyOtp({required String email, required String code}) async {
+    final response = await dio.post('/verify-otp', data: {
+      'email': email,
+      'code': code,
+    });
+
+    return response.data['data']['token'] as String;
   }
 }

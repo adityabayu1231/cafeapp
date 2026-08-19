@@ -18,12 +18,39 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.login(email: email, password: password);
       return const Right(null);
     } on DioException catch (e) {
-      final message = e.response?.data is Map
-          ? (e.response?.data['message'] ?? 'Login gagal.')
-          : 'Tidak dapat terhubung ke server.';
-      return Left(ServerFailure(message.toString()));
+      return Left(ServerFailure(_extractMessage(e)));
     } catch (e) {
-      return Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
+      return const Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyOtp({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      final token = await remoteDataSource.verifyOtp(email: email, code: code);
+      return Right(token);
+    } on DioException catch (e) {
+      return Left(ServerFailure(_extractMessage(e)));
+    } catch (e) {
+      return const Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
+    }
+  }
+
+  String _extractMessage(DioException e) {
+    final data = e.response?.data;
+    if (data is Map && data['errors'] is Map) {
+      final errors = data['errors'] as Map;
+      final firstError = errors.values.first;
+      if (firstError is List && firstError.isNotEmpty) {
+        return firstError.first.toString();
+      }
+    }
+    if (data is Map && data['message'] != null) {
+      return data['message'].toString();
+    }
+    return 'Tidak dapat terhubung ke server.';
   }
 }
