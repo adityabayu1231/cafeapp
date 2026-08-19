@@ -11,13 +11,16 @@ import 'presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
 
-Future<void> initAuthModule() async {
-  // Core
-  if (!sl.isRegistered<Dio>()) {
-    sl.registerLazySingleton<Dio>(() => DioClient().dio);
-  }
+Future<void> initAuthModule({void Function()? onUnauthenticated}) async {
+  // Core — SecureStorage duluan karena DioClient butuh dia
   if (!sl.isRegistered<SecureStorage>()) {
     sl.registerLazySingleton<SecureStorage>(() => SecureStorage());
+  }
+  if (!sl.isRegistered<Dio>()) {
+    sl.registerLazySingleton<Dio>(() => DioClient(
+      secureStorage: sl(),
+      onUnauthenticated: onUnauthenticated,
+    ).dio);
   }
 
   // Data
