@@ -9,12 +9,18 @@ import 'package:cafeapp/features/auth/domain/usecases/login_usecase.dart';
 import 'package:cafeapp/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:cafeapp/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cafeapp/features/auth/presentation/pages/login_page.dart';
+import 'package:cafeapp/features/auth/domain/usecases/check_auth_status_usecase.dart';
+import 'package:cafeapp/features/auth/domain/usecases/logout_usecase.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 class MockVerifyOtpUseCase extends Mock implements VerifyOtpUseCase {}
 class MockSecureStorage extends Mock implements SecureStorage {}
+class MockCheckAuthStatusUseCase extends Mock implements CheckAuthStatusUseCase {}
+class MockLogoutUseCase extends Mock implements LogoutUseCase {}
 
 void main() {
+  late MockCheckAuthStatusUseCase mockCheckAuthStatusUseCase;
+  late MockLogoutUseCase mockLogoutUseCase;
   late MockLoginUseCase mockLoginUseCase;
   late MockVerifyOtpUseCase mockVerifyOtpUseCase;
   late MockSecureStorage mockSecureStorage;
@@ -22,6 +28,8 @@ void main() {
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
     mockVerifyOtpUseCase = MockVerifyOtpUseCase();
+    mockCheckAuthStatusUseCase = MockCheckAuthStatusUseCase();
+    mockLogoutUseCase = MockLogoutUseCase();
     mockSecureStorage = MockSecureStorage();
   });
 
@@ -31,6 +39,8 @@ void main() {
         create: (_) => AuthBloc(
           loginUseCase: mockLoginUseCase,
           verifyOtpUseCase: mockVerifyOtpUseCase,
+          checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
+          logoutUseCase: mockLogoutUseCase,
           secureStorage: mockSecureStorage,
         ),
         child: const LoginView(),

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import '../../../../core/error/failures.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_datasource.dart';
 
@@ -32,6 +33,34 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final token = await remoteDataSource.verifyOtp(email: email, code: code);
       return Right(token);
+    } on DioException catch (e) {
+      return Left(ServerFailure(_extractMessage(e)));
+    } catch (e) {
+      return const Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getCurrentUser() async {
+    try {
+      final data = await remoteDataSource.getCurrentUser();
+      return Right(UserEntity(
+        id: data['id'] as int,
+        name: data['name'] as String,
+        email: data['email'] as String,
+      ));
+    } on DioException catch (e) {
+      return Left(ServerFailure(_extractMessage(e)));
+    } catch (e) {
+      return const Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      await remoteDataSource.logout();
+      return const Right(null);
     } on DioException catch (e) {
       return Left(ServerFailure(_extractMessage(e)));
     } catch (e) {

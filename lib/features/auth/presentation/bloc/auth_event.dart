@@ -26,3 +26,11 @@ class OtpSubmitted extends AuthEvent {
   @override
   List<Object?> get props => [email, code];
 }
+
+class AuthCheckRequested extends AuthEvent {
+  const AuthCheckRequested();
+}
+
+class LogoutRequested extends AuthEvent {
+  const LogoutRequested();
+}

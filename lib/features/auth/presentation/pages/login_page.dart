@@ -10,16 +10,11 @@ class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthBloc>(),
-      child: const LoginView(),
-    );
-  }
+  Widget build(BuildContext context) => const LoginView();
 }
 
 class LoginView extends StatefulWidget {
-  const LoginView();
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();

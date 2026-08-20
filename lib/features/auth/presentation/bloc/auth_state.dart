@@ -41,3 +41,7 @@ class AuthAuthenticated extends AuthState {
   @override
   List<Object?> get props => [token];
 }
+
+class AuthUnauthenticated extends AuthState {
+  const AuthUnauthenticated();
+}

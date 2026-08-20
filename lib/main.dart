@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'features/auth/injection_container.dart' as auth_di;
-import 'features/auth/presentation/pages/login_page.dart';
+import 'features/auth/presentation/pages/auth_gate.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -10,7 +10,7 @@ void main() async {
   await auth_di.initAuthModule(
     onUnauthenticated: () {
       navigatorKey.currentState?.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const LoginPage()),
+        MaterialPageRoute(builder: (_) => const AuthGate()),
             (route) => false,
       );
     },
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'Cafe App',
       theme: ThemeData(primarySwatch: Colors.brown),
-      home: const LoginPage(),
+      home: const AuthGate(),
     );
   }
 }
