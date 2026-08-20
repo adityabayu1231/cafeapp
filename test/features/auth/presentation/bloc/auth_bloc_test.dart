@@ -135,7 +135,7 @@ void main() {
       build: () {
         when(() => mockSecureStorage.getToken()).thenAnswer((_) async => 'expired-token');
         when(() => mockCheckAuthStatusUseCase())
-            .thenAnswer((_) async => const Left(ServerFailure('Unauthenticated.')));
+            .thenAnswer((_) async => const Left(AuthenticationFailure('Unauthenticated.')));
         when(() => mockSecureStorage.deleteToken()).thenAnswer((_) async {});
         return authBloc;
       },
@@ -143,6 +143,21 @@ void main() {
       expect: () => [const AuthLoading(), const AuthUnauthenticated()],
       verify: (_) {
         verify(() => mockSecureStorage.deleteToken()).called(1);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'keeps AuthAuthenticated (does not force logout) on network/server error',
+      build: () {
+        when(() => mockSecureStorage.getToken()).thenAnswer((_) async => 'stored-token');
+        when(() => mockCheckAuthStatusUseCase())
+            .thenAnswer((_) async => const Left(ServerFailure('Tidak dapat terhubung ke server.')));
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(const AuthCheckRequested()),
+      expect: () => [const AuthLoading(), const AuthAuthenticated(token: 'stored-token')],
+      verify: (_) {
+        verifyNever(() => mockSecureStorage.deleteToken());
       },
     );
   });

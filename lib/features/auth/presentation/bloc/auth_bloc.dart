@@ -4,6 +4,7 @@ import '../../domain/usecases/check_auth_status_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/verify_otp_usecase.dart';
+import '../../../../core/error/failures.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -60,8 +61,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await checkAuthStatusUseCase();
     await result.fold(
           (failure) async {
-        await secureStorage.deleteToken();
-        emit(const AuthUnauthenticated());
+        if (failure is AuthenticationFailure) {
+          // Token benar-benar invalid/expired di server — logout paksa.
+          await secureStorage.deleteToken();
+          emit(const AuthUnauthenticated());
+        } else {
+          // Gagal cek karena network/server error — jangan logout paksa,
+          // asumsikan token masih valid sampai terbukti sebaliknya.
+          emit(AuthAuthenticated(token: token));
+        }
       },
           (_) async => emit(AuthAuthenticated(token: token)),
     );

@@ -50,12 +50,14 @@ class AuthRepositoryImpl implements AuthRepository {
         email: data['email'] as String,
       ));
     } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        return Left(AuthenticationFailure(_extractMessage(e)));
+      }
       return Left(ServerFailure(_extractMessage(e)));
     } catch (e) {
       return const Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
     }
   }
-
   @override
   Future<Either<Failure, void>> logout() async {
     try {
