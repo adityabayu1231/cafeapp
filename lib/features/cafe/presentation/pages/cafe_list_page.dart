@@ -10,6 +10,7 @@ import '../bloc/cafe_list_event.dart';
 import '../bloc/cafe_list_state.dart';
 import '../widgets/cafe_card.dart';
 import '../widgets/cafe_card_skeleton.dart';
+import 'cafe_detail_page.dart';
 
 class CafeListPage extends StatelessWidget {
   const CafeListPage({super.key});
@@ -99,9 +100,15 @@ class _CafeListViewState extends State<_CafeListView> {
                       separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
                       itemBuilder: (context, index) {
                         final cafe = state.cafes[index];
-                        return CafeCard(cafe: cafe, onTap: () {
-                          // Navigasi ke detail cafe akan ditambahkan di task F-3
-                        });
+                        return CafeCard(
+                          cafe: cafe,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => CafeDetailPage(cafeId: cafe.id)),
+                            );
+                          },
+                        );
                       },
                     );
                   }
