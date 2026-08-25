@@ -15,6 +15,7 @@ dependencies:
   get_it: ^7.7.0
   dio: ^5.7.0
   rxdart: ^0.28.0
+  shimmer: ^3.0.0
   flutter_secure_storage: ^9.2.2
   shared_preferences: ^2.3.2
   equatable: ^2.0.5

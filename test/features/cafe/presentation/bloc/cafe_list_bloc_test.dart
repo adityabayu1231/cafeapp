@@ -34,7 +34,7 @@ void main() {
     openStatus: 'Tutup',
   );
 
-  final resultWithData = CafeListResult(
+  const resultWithData = CafeListResult(
     items: [cafeA, cafeB],
     currentPage: 1,
     lastPage: 1,
@@ -59,13 +59,13 @@ void main() {
       'emits [CafeListLoading, CafeListLoaded] when fetch succeeds',
       build: () {
         when(() => mockGetCafesUseCase(city: null))
-            .thenAnswer((_) async => Right(resultWithData));
+            .thenAnswer((_) async => const Right(resultWithData));
         return cafeListBloc;
       },
       act: (bloc) => bloc.add(const CafeListRequested()),
       expect: () => [
         const CafeListLoading(),
-        CafeListLoaded([cafeA, cafeB]),
+        const CafeListLoaded([cafeA, cafeB]),
       ],
     );
 
@@ -87,14 +87,15 @@ void main() {
     blocTest<CafeListBloc, CafeListState>(
       'passes city filter to use case when provided',
       build: () {
-        when(() => mockGetCafesUseCase(city: 'Jakarta'))
-            .thenAnswer((_) async => Right(CafeListResult(items: [cafeA], currentPage: 1, lastPage: 1, total: 1)));
+        when(() => mockGetCafesUseCase(city: 'Jakarta')).thenAnswer(
+              (_) async => const Right(CafeListResult(items: [cafeA], currentPage: 1, lastPage: 1, total: 1)),
+        );
         return cafeListBloc;
       },
       act: (bloc) => bloc.add(const CafeListRequested(city: 'Jakarta')),
       expect: () => [
         const CafeListLoading(),
-        CafeListLoaded([cafeA]),
+        const CafeListLoaded([cafeA]),
       ],
       verify: (_) {
         verify(() => mockGetCafesUseCase(city: 'Jakarta')).called(1);
@@ -107,7 +108,7 @@ void main() {
       'emits [CafeListLoading, CafeListLoaded] after debounce when search changes',
       build: () {
         when(() => mockGetCafesUseCase(city: 'Bandung')).thenAnswer(
-              (_) async => Right(CafeListResult(items: [], currentPage: 1, lastPage: 1, total: 0)),
+              (_) async => const Right(CafeListResult(items: [], currentPage: 1, lastPage: 1, total: 0)),
         );
         return cafeListBloc;
       },
@@ -123,10 +124,10 @@ void main() {
       'only processes the latest search when typed quickly (debounce + switchMap)',
       build: () {
         when(() => mockGetCafesUseCase(city: 'Ja')).thenAnswer(
-              (_) async => Right(CafeListResult(items: [cafeA], currentPage: 1, lastPage: 1, total: 1)),
+              (_) async => const Right(CafeListResult(items: [cafeA], currentPage: 1, lastPage: 1, total: 1)),
         );
         when(() => mockGetCafesUseCase(city: 'Jakarta')).thenAnswer(
-              (_) async => Right(CafeListResult(items: [cafeA], currentPage: 1, lastPage: 1, total: 1)),
+              (_) async => const Right(CafeListResult(items: [cafeA], currentPage: 1, lastPage: 1, total: 1)),
         );
         return cafeListBloc;
       },
@@ -137,7 +138,7 @@ void main() {
       wait: const Duration(milliseconds: 500),
       expect: () => [
         const CafeListLoading(),
-        CafeListLoaded([cafeA]),
+        const CafeListLoaded([cafeA]),
       ],
       verify: (_) {
         verifyNever(() => mockGetCafesUseCase(city: 'Ja'));
