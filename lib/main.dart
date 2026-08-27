@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'features/auth/injection_container.dart' as auth_di;
 import 'features/cafe/injection_container.dart' as cafe_di;
+import 'features/catalog/injection_container.dart' as catalog_di;
 import 'features/auth/presentation/pages/auth_gate.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -18,6 +19,15 @@ void main() async {
   );
 
   await cafe_di.initCafeModule(
+    onUnauthenticated: () {
+      navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const AuthGate()),
+            (route) => false,
+      );
+    },
+  );
+
+  await catalog_di.initCatalogModule(
     onUnauthenticated: () {
       navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const AuthGate()),

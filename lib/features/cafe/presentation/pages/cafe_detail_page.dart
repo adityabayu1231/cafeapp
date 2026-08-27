@@ -11,6 +11,7 @@ import '../bloc/cafe_detail_event.dart';
 import '../bloc/cafe_detail_state.dart';
 import '../widgets/cafe_open_status_badge.dart';
 import '../widgets/operating_hour_row.dart';
+import '../../../catalog/presentation/pages/catalog_page.dart';
 
 const String _storageBaseUrl = 'http://auth-api.test/storage/';
 
@@ -88,6 +89,22 @@ class _CafeDetailView extends StatelessWidget {
                   Text(detail.cafe.address, style: AppTextStyles.body.copyWith(color: AppColors.textSecondary)),
                   const SizedBox(height: AppSpacing.sm),
                   CafeOpenStatusBadge(openStatus: detail.cafe.openStatus),
+                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CatalogPage(cafeId: detail.cafe.id),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.restaurant_menu),
+                      label: const Text('Lihat Menu'),
+                    ),
+                  ),
                   const SizedBox(height: AppSpacing.xl),
                   const Text('Jam Operasional', style: AppTextStyles.heading2),
                   const SizedBox(height: AppSpacing.sm),
