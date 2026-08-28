@@ -13,25 +13,16 @@ class CafeListBloc extends Bloc<CafeListEvent, CafeListState> {
   final GetCafesUseCase getCafesUseCase;
 
   CafeListBloc({required this.getCafesUseCase}) : super(const CafeListLoading()) {
-    on<CafeListRequested>(_onCafeListRequested);
+    on<CafeListRequested>((event, emit) => _fetchCafes(event.city, emit));
     on<CafeSearchChanged>(
-      _onCafeSearchChanged,
+          (event, emit) => _fetchCafes(event.city, emit),
       transformer: _debounce(const Duration(milliseconds: 400)),
     );
   }
 
-  Future<void> _onCafeListRequested(CafeListRequested event, Emitter<CafeListState> emit) async {
+  Future<void> _fetchCafes(String? city, Emitter<CafeListState> emit) async {
     emit(const CafeListLoading());
-    final result = await getCafesUseCase(city: event.city);
-    result.fold(
-          (failure) => emit(CafeListError(failure.message)),
-          (data) => emit(CafeListLoaded(data.items)),
-    );
-  }
-
-  Future<void> _onCafeSearchChanged(CafeSearchChanged event, Emitter<CafeListState> emit) async {
-    emit(const CafeListLoading());
-    final result = await getCafesUseCase(city: event.city);
+    final result = await getCafesUseCase(city: city);
     result.fold(
           (failure) => emit(CafeListError(failure.message)),
           (data) => emit(CafeListLoaded(data.items)),
