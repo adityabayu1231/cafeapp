@@ -223,7 +223,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: AppSpacing.sm),
-                        Text('Masukkan Kode OTP', style: AppTextStyles.heading1),
+                        const Text('Masukkan Kode OTP', style: AppTextStyles.heading1),
                         const SizedBox(height: AppSpacing.xs),
                         Text.rich(
                           TextSpan(
