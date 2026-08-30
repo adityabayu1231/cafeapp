@@ -10,6 +10,8 @@ import 'domain/usecases/login_usecase.dart';
 import 'domain/usecases/logout_usecase.dart';
 import 'domain/usecases/verify_otp_usecase.dart';
 import 'presentation/bloc/auth_bloc.dart';
+import 'domain/usecases/register_usecase.dart';
+import 'presentation/bloc/register_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -27,6 +29,7 @@ Future<void> initAuthModule({void Function()? onUnauthenticated}) async {
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
 
   sl.registerLazySingleton(() => LoginUseCase(sl()));
+  sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => VerifyOtpUseCase(sl()));
   sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
   sl.registerLazySingleton(() => LogoutUseCase(sl(), sl()));
@@ -38,4 +41,6 @@ Future<void> initAuthModule({void Function()? onUnauthenticated}) async {
     logoutUseCase: sl(),
     secureStorage: sl(),
   ));
+
+  sl.registerFactory(() => RegisterBloc(registerUseCase: sl()));
 }

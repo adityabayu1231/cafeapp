@@ -1,6 +1,12 @@
 import 'package:dio/dio.dart';
 
 abstract class AuthRemoteDataSource {
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  });
   Future<void> login({required String email, required String password});
   Future<String> verifyOtp({required String email, required String code});
   Future<Map<String, dynamic>> getCurrentUser();
@@ -11,6 +17,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
 
   AuthRemoteDataSourceImpl(this.dio);
+
+  @override
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    await dio.post('/register', data: {
+      'name': name,
+      'email': email,
+      'password': password,
+      'password_confirmation': passwordConfirmation,
+    });
+  }
 
   @override
   Future<void> login({required String email, required String password}) async {

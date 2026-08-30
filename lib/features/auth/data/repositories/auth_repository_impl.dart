@@ -11,6 +11,28 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
 
   @override
+  Future<Either<Failure, void>> register({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      await remoteDataSource.register(
+        name: name,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+      );
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ServerFailure(_extractMessage(e)));
+    } catch (e) {
+      return const Left(ServerFailure('Terjadi kesalahan tidak terduga.'));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> login({
     required String email,
     required String password,

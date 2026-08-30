@@ -7,7 +7,10 @@ import '../../../../core/widgets/primary_button.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import 'register_page.dart';
 import 'otp_verification_page.dart';
+import '../../injection_container.dart';
+import '../bloc/register_bloc.dart'show RegisterBloc;
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -182,7 +185,7 @@ class _LoginViewState extends State<LoginView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: AppSpacing.sm),
-                        Text('Masuk ke Akun', style: AppTextStyles.heading1),
+                        const Text('Masuk ke Akun', style: AppTextStyles.heading1),
                         const SizedBox(height: AppSpacing.xs),
                         Text(
                           'Masukkan email dan password untuk melanjutkan',
@@ -233,6 +236,33 @@ class _LoginViewState extends State<LoginView> {
                           },
                         ),
                         const SizedBox(height: AppSpacing.lg),
+                        Center(
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider(
+                                    create: (_) => sl<RegisterBloc>(),
+                                    child: const RegisterPage(),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text.rich(
+                              TextSpan(
+                                style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+                                children: const [
+                                  TextSpan(text: 'Belum punya akun? '),
+                                  TextSpan(
+                                    text: 'Daftar',
+                                    style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.primary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xl),
                       ],
                     ),
                   ),
