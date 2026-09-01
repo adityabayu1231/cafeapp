@@ -25,7 +25,7 @@ Future<void> initCartModule() async {
   sl.registerLazySingleton(() => RemoveItemFromCartUseCase(sl()));
   sl.registerLazySingleton(() => ClearCartUseCase(sl()));
 
-  sl.registerFactory(() => CartBloc(
+  sl.registerLazySingleton(() => CartBloc(
     getCartUseCase: sl(),
     addItemToCartUseCase: sl(),
     removeItemFromCartUseCase: sl(),

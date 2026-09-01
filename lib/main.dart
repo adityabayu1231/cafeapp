@@ -3,6 +3,9 @@ import 'features/auth/injection_container.dart' as auth_di;
 import 'features/cafe/injection_container.dart' as cafe_di;
 import 'features/catalog/injection_container.dart' as catalog_di;
 import 'features/cart/injection_container.dart' as cart_di;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/cart/presentation/bloc/cart_bloc.dart';
+import 'features/cart/presentation/bloc/cart_event.dart';
 import 'features/auth/presentation/pages/auth_gate.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -47,11 +50,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Cafe App',
-      theme: ThemeData(primarySwatch: Colors.brown),
-      home: const AuthGate(),
+    return BlocProvider(
+      create: (_) => cart_di.sl<CartBloc>()..add(const CartStarted()),
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        title: 'Cafe App',
+        theme: ThemeData(primarySwatch: Colors.brown),
+        home: const AuthGate(),
+      ),
     );
   }
 }
