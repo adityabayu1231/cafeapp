@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'features/auth/injection_container.dart' as auth_di;
 import 'features/cafe/injection_container.dart' as cafe_di;
 import 'features/catalog/injection_container.dart' as catalog_di;
+import 'features/cart/injection_container.dart' as cart_di;
 import 'features/auth/presentation/pages/auth_gate.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -35,6 +36,8 @@ void main() async {
       );
     },
   );
+
+  await cart_di.initCartModule();
 
   runApp(const MyApp());
 }
