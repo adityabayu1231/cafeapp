@@ -8,6 +8,7 @@ import 'features/wallet/injection_container.dart' as wallet_di;
 import 'features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'features/wallet/presentation/bloc/wallet_event.dart';
 import 'features/checkout/injection_container.dart' as checkout_di;
+import 'features/order/injection_container.dart' as order_di;
 import 'features/cart/presentation/bloc/cart_bloc.dart';
 import 'features/cart/presentation/bloc/cart_event.dart';
 import 'features/auth/presentation/pages/auth_gate.dart';
@@ -56,6 +57,15 @@ void main() async {
   );
 
   await checkout_di.initCheckoutModule(
+    onUnauthenticated: () {
+      navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const AuthGate()),
+            (route) => false,
+      );
+    },
+  );
+
+  await order_di.initOrderModule(
     onUnauthenticated: () {
       navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const AuthGate()),

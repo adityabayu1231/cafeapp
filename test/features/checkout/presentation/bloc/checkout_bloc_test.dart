@@ -8,7 +8,7 @@ import 'package:cafeapp/features/cart/domain/entities/cart_item_option_entity.da
 import 'package:cafeapp/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:cafeapp/features/cart/presentation/bloc/cart_event.dart';
 import 'package:cafeapp/features/cart/presentation/bloc/cart_state.dart';
-import 'package:cafeapp/features/checkout/domain/entities/order_entity.dart';
+import 'package:cafeapp/features/order/domain/entities/order_entity.dart';
 import 'package:cafeapp/features/checkout/domain/usecases/create_order_usecase.dart';
 import 'package:cafeapp/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:cafeapp/features/checkout/presentation/bloc/checkout_event.dart';

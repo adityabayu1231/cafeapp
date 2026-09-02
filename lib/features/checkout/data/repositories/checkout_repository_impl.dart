@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import '../../../../core/error/failures.dart';
-import '../../domain/entities/order_entity.dart';
+import '../../../order/domain/entities/order_entity.dart';
 import '../../domain/repositories/checkout_repository.dart';
 import '../datasources/checkout_remote_datasource.dart';
 

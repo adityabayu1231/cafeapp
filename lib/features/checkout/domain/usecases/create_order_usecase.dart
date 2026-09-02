@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
 import '../../../cart/domain/entities/cart_item_entity.dart';
-import '../entities/order_entity.dart';
+import '../../../order/domain/entities/order_entity.dart';
 import '../repositories/checkout_repository.dart';
 
 class CreateOrderUseCase {

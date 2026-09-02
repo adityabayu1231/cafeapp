@@ -5,7 +5,7 @@ import '../../../cart/presentation/bloc/cart_event.dart';
 import '../../../wallet/presentation/bloc/wallet_bloc.dart';
 import '../../../wallet/presentation/bloc/wallet_event.dart';
 import '../../../wallet/presentation/bloc/wallet_state.dart';
-import '../../domain/entities/order_entity.dart';
+import '../../../order/domain/entities/order_entity.dart';
 import '../../domain/usecases/create_order_usecase.dart';
 import 'checkout_event.dart';
 import 'checkout_state.dart';
