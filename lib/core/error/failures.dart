@@ -23,3 +23,7 @@ class ValidationFailure extends Failure {
 class AuthenticationFailure extends Failure {
   const AuthenticationFailure(super.message);
 }
+
+class InsufficientBalanceFailure extends Failure {
+  const InsufficientBalanceFailure(super.message);
+}

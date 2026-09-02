@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/wallet/injection_container.dart' as wallet_di;
 import 'features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'features/wallet/presentation/bloc/wallet_event.dart';
+import 'features/checkout/injection_container.dart' as checkout_di;
 import 'features/cart/presentation/bloc/cart_bloc.dart';
 import 'features/cart/presentation/bloc/cart_event.dart';
 import 'features/auth/presentation/pages/auth_gate.dart';
@@ -44,7 +45,17 @@ void main() async {
   );
 
   await cart_di.initCartModule();
+
   await wallet_di.initWalletModule(
+    onUnauthenticated: () {
+      navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const AuthGate()),
+            (route) => false,
+      );
+    },
+  );
+
+  await checkout_di.initCheckoutModule(
     onUnauthenticated: () {
       navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const AuthGate()),
